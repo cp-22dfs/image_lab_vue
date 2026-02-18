@@ -21,7 +21,7 @@ This is a local image synchronization and gallery system built with Laravel and 
     php artisan migrate
     php artisan config:clear
 
-# Run - 4 Different terminal
+# Run - 4 different terminals
 
     php artisan serve
     npm run dev
