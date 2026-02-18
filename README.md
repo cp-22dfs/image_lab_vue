@@ -18,16 +18,12 @@ This is a local image synchronization and gallery system built with Laravel and 
 
 # Database
 
-   php artisan migrate
-   php artisan config:clear
+    php artisan migrate
+    php artisan config:clear
 
-# Run
+# Run - 4 Different terminal
 
     php artisan serve
     npm run dev
-
-    Background Jobs
     php artisan queue:work
-
-    Task Scheduler
     php artisan schedule:work
