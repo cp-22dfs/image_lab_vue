@@ -25,25 +25,36 @@ class ScanTempFolder implements ShouldQueue
      */
     public function handle(): void
     {
-        $disk = Storage::disk('external');
-        $filesOnDisk = $disk->files();
+        $disk = Storage::disk('shared_recup');
+
+        try {
+            $filesOnDisk = $disk->files();
+        } catch (\Exception $e) {
+            return;
+        }
+
         $presentHashes = [];
 
         foreach ($filesOnDisk as $file) {
             $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+
             if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp'])) {
-
                 $fullPath = $disk->path($file);
-                $fileHash = md5_file($fullPath);
-                $presentHashes[] = $fileHash;
 
-                ExternalImage::updateOrCreate(
-                    ['hash' => $fileHash],
-                    ['filename' => $file]
-                );
+                if (file_exists($fullPath)) {
+                    $fileHash = md5_file($fullPath);
+                    $presentHashes[] = $fileHash;
+
+                    ExternalImage::updateOrCreate(
+                        ['hash' => $fileHash],
+                        ['filename' => $file]
+                    );
+                }
             }
         }
 
-        ExternalImage::whereNotIn('hash', $presentHashes)->delete();
+        if (!empty($presentHashes)) {
+            ExternalImage::whereNotIn('hash', $presentHashes)->delete();
+        }
     }
 }

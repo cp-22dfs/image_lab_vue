@@ -62,7 +62,11 @@ return [
             'throw' => false,
             'report' => false,
         ],
-
+        'shared_recup' => [
+            'driver' => 'local',
+            'root' => '//cervin/Partage/Partage Tous-Tous/recupimages',
+            'visibility' => 'private',
+        ],
     ],
 
     /*
